@@ -1,0 +1,85 @@
+/* Fondo general oscuro */
+body {
+    background-color: #111;
+    color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Encabezados principales en rojo */
+  h1, h2, h3, h4 {
+    color: #e50914;
+  }
+  
+  /* Contenedores */
+  .container {
+    padding-top: 2rem;
+  }
+  
+  /* Inputs */
+  input[type="range"] {
+    accent-color: #e50914;
+  }
+  
+  /* Select */
+  select.form-select {
+    background-color: #222;
+    color: #f8f9fa;
+    border: 1px solid #e50914;
+  }
+  
+  /* Botones personalizados */
+  .btn-danger, .btn-outline-danger {
+    background-color: #e50914;
+    border-color: #e50914;
+    color: #fff;
+  }
+  
+  .btn-danger:hover,
+  .btn-outline-danger:hover {
+    background-color: #b2060f;
+    border-color: #b2060f;
+  }
+  
+  .btn-outline-danger {
+    background-color: transparent;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background-color: #000 !important;
+    border-bottom: 2px solid #e50914;
+  }
+  
+  .navbar-brand {
+    color: #e50914 !important;
+  }
+  
+  .nav-link {
+    color: #ccc !important;
+  }
+  
+  .nav-link:hover {
+    color: #fff !important;
+  }
+  
+  /* Slider etiquetas */
+  label {
+    margin-top: 0.5rem;
+    margin-bottom: 0.2rem;
+    color: #aaa;
+  }
+  
+  /* Títulos dentro de controles */
+  .row h4 {
+    color: #f8f9fa;
+  }
+  
+  /* Footer si deseas agregar */
+  footer {
+    margin-top: 4rem;
+    padding: 1rem 0;
+    background-color: #000;
+    color: #777;
+    text-align: center;
+    border-top: 1px solid #333;
+  }

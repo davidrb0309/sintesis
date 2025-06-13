@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Síntesis Aditiva</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../css/styles.css"/>
+  <style>
+    /* Estilos para el visualizador */
+    #visualizer {
+      width: 100%;
+      height: 150px;
+      background-color: #111;
+      border: 1px solid #dc3545; /* color rojo Bootstrap */
+      border-radius: 6px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body class="bg-dark text-white">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-danger">
+    <div class="container-fluid">
+      <a class="navbar-brand text-danger" href="../index.html">Síntesis Web</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="../aditiva/aditiva.html">Síntesis Aditiva</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="../sustractiva/sustractiva.html">Síntesis Sustractiva</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <div class="container mt-4">
+    <h2 class="text-danger mb-4">Síntesis Aditiva</h2>
+
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <h4>Oscilador 1</h4>
+        <label for="freq1">Frecuencia: <span id="freq1Val" class="text-info">440 Hz</span></label>
+        <input type="range" min="100" max="1000" value="440" id="freq1" class="form-range"/>
+        
+        <label for="amp1">Amplitud: <span id="amp1Val" class="text-info">0.5</span></label>
+        <input type="range" min="0" max="1" step="0.01" value="0.5" id="amp1" class="form-range"/>
+        
+        <label for="wave1">Forma de onda:</label>
+        <select id="wave1" class="form-select mb-2">
+          <option value="sine">Seno</option>
+          <option value="square">Cuadrada</option>
+          <option value="triangle">Triangular</option>
+          <option value="sawtooth">Diente de sierra</option>
+        </select>
+        <button id="play1" class="btn btn-danger me-2">Play/Pause</button>
+      </div>
+
+      <div class="col-md-6">
+        <h4>Oscilador 2</h4>
+        <label for="freq2">Frecuencia: <span id="freq2Val" class="text-info">660 Hz</span></label>
+        <input type="range" min="100" max="1000" value="660" id="freq2" class="form-range"/>
+        
+        <label for="amp2">Amplitud: <span id="amp2Val" class="text-info">0.5</span></label>
+        <input type="range" min="0" max="1" step="0.01" value="0.5" id="amp2" class="form-range"/>
+        
+        <label for="wave2">Forma de onda:</label>
+        <select id="wave2" class="form-select mb-2">
+          <option value="sine">Seno</option>
+          <option value="square">Cuadrada</option>
+          <option value="triangle">Triangular</option>
+          <option value="sawtooth">Diente de sierra</option>
+        </select>
+        <button id="play2" class="btn btn-danger me-2">Play/Pause</button>
+      </div>
+    </div>
+
+    <div class="text-center mb-4">
+      <button id="playBoth" class="btn btn-outline-danger">Play/Pause Ambos</button>
+    </div>
+
+    <!-- Visualizador -->
+    <canvas id="visualizer"></canvas>
+
+    <!-- Botón para volver al índice -->
+    <div class="text-center mt-4">
+      <a href="../index.html" class="btn btn-secondary">Volver al Inicio</a>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Tu JS de síntesis -->
+  <script src="../js/aditiva.js"></script>
+
+  <script>
+    // Elementos de UI
+    const freq1Input = document.getElementById("freq1");
+    const freq2Input = document.getElementById("freq2");
+    const freq1Val = document.getElementById("freq1Val");
+    const freq2Val = document.getElementById("freq2Val");
+
+    const amp1Input = document.getElementById("amp1");
+    const amp2Input = document.getElementById("amp2");
+    const amp1Val = document.getElementById("amp1Val");
+    const amp2Val = document.getElementById("amp2Val");
+
+    // Actualiza valores en UI
+    freq1Input.addEventListener("input", () => {
+      freq1Val.textContent = `${freq1Input.value} Hz`;
+      if(osc1) osc1.frequency.setValueAtTime(freq1Input.value, audioCtx.currentTime);
+    });
+
+    freq2Input.addEventListener("input", () => {
+      freq2Val.textContent = `${freq2Input.value} Hz`;
+      if(osc2) osc2.frequency.setValueAtTime(freq2Input.value, audioCtx.currentTime);
+    });
+
+    amp1Input.addEventListener("input", () => {
+      amp1Val.textContent = parseFloat(amp1Input.value).toFixed(2);
+      if(gainNode1) gainNode1.gain.setValueAtTime(amp1Input.value, audioCtx.currentTime);
+    });
+
+    amp2Input.addEventListener("input", () => {
+      amp2Val.textContent = parseFloat(amp2Input.value).toFixed(2);
+      if(gainNode2) gainNode2.gain.setValueAtTime(amp2Input.value, audioCtx.currentTime);
+    });
+
+    // Audio API setup
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Osciladores y nodos
+    let osc1, osc2;
+    let gainNode1 = audioCtx.createGain();
+    let gainNode2 = audioCtx.createGain();
+
+    // Analyser para visualización
+    const analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    const bufferLength = analyser.fftSize;
+    const dataArray = new Uint8Array(bufferLength);
+
+    // Canvas para visualización
+    const canvas = document.getElementById("visualizer");
+    const canvasCtx = canvas.getContext("2d");
+
+    // Ajustar tamaño canvas
+    function resizeCanvas() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    // Función para dibujar onda
+    function draw() {
+      requestAnimationFrame(draw);
+
+      analyser.getByteTimeDomainData(dataArray);
+
+      canvasCtx.fillStyle = "#111";
+      canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+      canvasCtx.lineWidth = 2;
+      canvasCtx.strokeStyle = "#dc3545"; // rojo Bootstrap
+
+      canvasCtx.beginPath();
+
+      let sliceWidth = canvas.width / bufferLength;
+      let x = 0;
+
+      for(let i = 0; i < bufferLength; i++) {
+        let v = dataArray[i] / 128.0; // Normaliza entre 0 y 2
+        let y = v * canvas.height / 2;
+
+        if(i === 0) {
+          canvasCtx.moveTo(x, y);
+        } else {
+          canvasCtx.lineTo(x, y);
+        }
+
+        x += sliceWidth;
+      }
+
+      canvasCtx.lineTo(canvas.width, canvas.height / 2);
+      canvasCtx.stroke();
+    }
+
+    draw();
+
+    // Funciones para play/pause
+    function startOsc1() {
+      osc1 = audioCtx.createOscillator();
+      osc1.type = document.getElementById("wave1").value;
+      osc1.frequency.setValueAtTime(freq1Input.value, audioCtx.currentTime);
+
+      gainNode1.gain.setValueAtTime(amp1Input.value, audioCtx.currentTime);
+
+      osc1.connect(gainNode1).connect(analyser).connect(audioCtx.destination);
+      osc1.start();
+    }
+
+    function startOsc2() {
+      osc2 = audioCtx.createOscillator();
+      osc2.type = document.getElementById("wave2").value;
+      osc2.frequency.setValueAtTime(freq2Input.value, audioCtx.currentTime);
+
+      gainNode2.gain.setValueAtTime(amp2Input.value, audioCtx.currentTime);
+
+      osc2.connect(gainNode2).connect(analyser).connect(audioCtx.destination);
+      osc2.start();
+    }
+
+    function stopOsc(osc) {
+      if(osc) {
+        osc.stop();
+        osc.disconnect();
+      }
+    }
+
+    let playing1 = false;
+    let playing2 = false;
+
+    document.getElementById("play1").addEventListener("click", () => {
+      if(!playing1) {
+        if(!osc1) startOsc1();
+        playing1 = true;
+      } else {
+        stopOsc(osc1);
+        osc1 = null;
+        playing1 = false;
+      }
+    });
+
+    document.getElementById("play2").addEventListener("click", () => {
+      if(!playing2) {
+        if(!osc2) startOsc2();
+        playing2 = true;
+      } else {
+        stopOsc(osc2);
+        osc2 = null;
+        playing2 = false;
+      }
+    });
+
+    document.getElementById("playBoth").addEventListener("click", () => {
+      if(!playing1 && !playing2) {
+        if(!osc1) startOsc1();
+        if(!osc2) startOsc2();
+        playing1 = true;
+        playing2 = true;
+      } else {
+        stopOsc(osc1);
+        stopOsc(osc2);
+        osc1 = null;
+        osc2 = null;
+        playing1 = false;
+        playing2 = false;
+      }
+    });
+  </script>
+</body>
+</html>
