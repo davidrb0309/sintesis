@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .container {
+    padding: 40px 20px;
+  }
+  
+  .controls {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+  select {
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: #222;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .octave-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .octave-controls button {
+    padding: 8px 15px;
+    font-size: 16px;
+    background-color: #f44336;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .octave-controls button:hover {
+    background-color: #d32f2f;
+  }
+  
+  .piano {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .key {
+    width: 60px;
+    height: 200px;
+    border: 2px solid #333;
+    margin: 0 3px;
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    cursor: pointer;
+    position: relative;
+    border-radius: 5px;
+    transition: all 0.1s ease;
+    user-select: none;
+  }
+  
+  .key:active,
+  .key.playing {
+    background-color: #f44336;
+    color: #fff;
+    transform: scale(0.97);
+  }
+  
+  .key span {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
