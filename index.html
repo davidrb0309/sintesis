@@ -2,18 +2,54 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explora técnicas de síntesis de sonido como la aditiva y la sustractiva con ejemplos visuales e interactivos." />
   <title>Síntesis de Sonido</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/styles.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Mejora visual en dispositivos móviles -->
+  <style>
+    /* Ajustes visuales móviles adicionales */
+    h1, p {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 1.2rem;
+      }
+
+      .nav-link {
+        font-size: 0.9rem;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body class="bg-dark text-white">
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-danger">
+  <!-- Navegación -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-danger" role="navigation" aria-label="Menú principal">
     <div class="container-fluid">
       <a class="navbar-brand text-danger" href="#">Síntesis Web</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Mostrar navegación">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -29,38 +65,44 @@
     </div>
   </nav>
 
-  <div class="container mt-5 text-center">
+  <!-- Contenido principal -->
+  <main class="container mt-5 text-center">
     <h1 class="text-danger">Bienvenido a la Plataforma de Síntesis de Sonido</h1>
     <p class="text-secondary">Explora y experimenta con técnicas de síntesis aditiva y sustractiva.</p>
 
-    <!-- Galería con 3 imágenes -->
-    <div class="row mt-5 g-4 justify-content-center">
+    <!-- Galería -->
+    <section class="row mt-5 g-4 justify-content-center" aria-label="Galería de imágenes de síntesis">
       <div class="col-12 col-md-4">
         <img 
           src="https://res.cloudinary.com/dzjifv8io/image/upload/v1750031153/WhatsApp_Image_2025-06-15_at_6.42.04_PM_1_qx6gcs.jpg" 
-          alt="Imagen 1" 
+          alt="Visualización de forma de onda generada por síntesis aditiva" 
           class="img-fluid rounded border border-danger"
         />
       </div>
       <div class="col-12 col-md-4">
         <img 
           src="https://res.cloudinary.com/dzjifv8io/image/upload/v1750031165/WhatsApp_Image_2025-06-15_at_6.42.04_PM_2_apu83s.jpg" 
-          alt="Imagen 2" 
+          alt="Espectro de frecuencias en síntesis sustractiva" 
           class="img-fluid rounded border border-danger"
         />
       </div>
       <div class="col-12 col-md-4">
         <img 
           src="https://res.cloudinary.com/dzjifv8io/image/upload/v1750031141/WhatsApp_Image_2025-06-15_at_6.42.04_PM_x3v2q6.jpg" 
-          alt="Imagen 3" 
+          alt="Interfaz de usuario de un sintetizador virtual" 
           class="img-fluid rounded border border-danger"
         />
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 
+  <!-- Pie de página -->
+  <footer class="text-center text-secondary mt-5 py-3 border-top border-danger">
+    <small>© 2025 Plataforma de Síntesis de Sonido. Todos los derechos reservados.</small>
+  </footer>
+
+  <!-- Scripts de Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
 
