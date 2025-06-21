@@ -1,168 +1,104 @@
-/* Import Google font - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+/* General */
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
   background: #121212;
   color: #fff;
 }
-.wrapper {
-  padding: 35px 40px;
-  border-radius: 20px;
-  background: #141414;
-  width: 100%;
-  max-width: 1000px;
-}
-.wrapper header {
-  display: flex;
-  color: #B2B2B2;
-  align-items: center;
-  justify-content: space-between;
-}
-header h2 {
-  font-size: 1.6rem;
-}
-header .column {
-  display: flex;
-  align-items: center;
-}
-header span {
-  font-weight: 500;
-  margin-right: 15px;
-  font-size: 1.19rem;
-}
-header input {
-  outline: none;
-  border-radius: 30px;
-}
-.volume-slider input {
-  accent-color: #fff;
-}
-.keys-checkbox input {
-  height: 30px;
-  width: 60px;
-  cursor: pointer;
-  appearance: none;
+
+.keyboard-wrapper {
   position: relative;
-  background: #4B4B4B
-}
-.keys-checkbox input::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #8c8c8c;
-  transform: translateY(-50%);
-  transition: all 0.3s ease;
-}
-.keys-checkbox input:checked::before {
-  left: 35px;
-  background: #fff;
+  margin-top: 40px;
+  height: 230px;
 }
 
-/* Piano Keys Layout */
-.piano-keys {
+/* Teclas blancas */
+.white-keys {
   display: flex;
-  list-style: none;
-  margin-top: 40px;
-  justify-content: space-between;
-  padding: 0 15px;
+  z-index: 1;
 }
-.piano-keys .key {
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-  text-transform: uppercase;
-}
-.piano-keys .black {
-  z-index: 2;
-  width: 44px;
-  height: 140px;
-  margin: 0 -22px 0 -22px;
-  border-radius: 0 0 5px 5px;
-  background: linear-gradient(#333, #000);
-}
-.piano-keys .black.active {
-  box-shadow: inset -5px -10px 10px rgba(255,255,255,0.1);
-  background: linear-gradient(to bottom, #000, #434343);
-}
-.piano-keys .white {
-  height: 230px;
+
+.key.white {
   width: 70px;
-  border-radius: 8px;
-  border: 1px solid #000;
+  height: 230px;
   background: linear-gradient(#fff 96%, #eee 4%);
-}
-.piano-keys .white.active {
-  box-shadow: inset -5px 5px 20px rgba(0,0,0,0.2);
-  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
-}
-.piano-keys .key span {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  color: #A2A2A2;
-  font-size: 1.13rem;
+  border: 1px solid #000;
+  border-radius: 0 0 5px 5px;
+  position: relative;
+  margin: 0 1px;
   text-align: center;
 }
-.piano-keys .key.hide span {
-  display: none;
-}
-.piano-keys .black span {
-  bottom: 13px;
-  color: #888888;
+
+.key.white span {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  color: #666;
+  font-size: 14px;
 }
 
-/* Responsivity adjustments */
-@media screen and (max-width: 815px) {
-  .wrapper {
-    padding: 25px;
-  }
-  header {
-    flex-direction: column;
-  }
-  header :where(h2, .column) {
-    margin-bottom: 13px;
-  }
-  .volume-slider input {
-    max-width: 100px;
-  }
-  .piano-keys {
-    margin-top: 20px;
-  }
-  .piano-keys .key:where(:nth-child(9), :nth-child(10)) {
-    display: none;
-  }
-  .piano-keys .black {
-    height: 100px;
-    width: 40px;
-    margin: 0 -20px 0 -20px;
-  }
-  .piano-keys .white {
-    height: 180px;
-    width: 60px;
-  }
+/* Teclas negras */
+.black-keys {
+  pointer-events: none; /* evita que el espacio negro cause clics */
+  top: 0;
+  height: 140px;
 }
-@media screen and (max-width: 615px) {
-  .piano-keys .key:nth-child(13),
-  .piano-keys .key:nth-child(14),
-  .piano-keys .key:nth-child(15),
-  .piano-keys .key:nth-child(16),
-  .piano-keys .key :nth-child(17) {
-    display: none;
-  }
-  .piano-keys .white {
+
+.key.black {
+  pointer-events: all;
+  width: 44px;
+  height: 140px;
+  background: linear-gradient(#333, #000);
+  position: relative;
+  border-radius: 0 0 5px 5px;
+  margin: 0 8px;
+  z-index: 2;
+}
+
+.key.black span {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: #ccc;
+}
+
+/* Espaciador para donde no hay tecla negra */
+.key.spacer {
+  width: 70px;
+  height: 140px;
+  background: transparent;
+  margin: 0 8px;
+  pointer-events: none;
+}
+
+/* Controles */
+.controls {
+  font-size: 1.2rem;
+}
+
+/* Footer */
+footer {
+  background: #000;
+  border-top: 2px solid #dc3545;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .key.white {
     width: 50px;
+    height: 180px;
+  }
+
+  .key.black {
+    width: 32px;
+    height: 100px;
+    margin: 0 4px;
+  }
+
+  .key.white span,
+  .key.black span {
+    font-size: 10px;
   }
 }
+
