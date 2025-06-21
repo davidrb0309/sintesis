@@ -1,128 +1,105 @@
-/* Fuente */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
 body {
-  background: #121212;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #111;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Contenedor del teclado */
-.keyboard-container {
-  user-select: none;
-  margin: 0 auto;
+.navbar {
+  width: 100%;
+  background: #000;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.navbar a.active {
+  color: red;
+}
+
+.synth-container {
   max-width: 900px;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
 }
 
-/* Lista de teclas */
-.piano-keys {
+.controls {
+  margin: 1rem 0;
+}
+
+#oscilloscope {
+  width: 100%;
+  height: 120px;
+  background-color: #000;
+  margin-bottom: 2rem;
+}
+
+.keyboard {
   display: flex;
   position: relative;
   justify-content: center;
-  padding: 0 10px;
-  list-style: none;
 }
 
-/* Teclas blancas */
-.piano-keys .key.white {
+.key {
   position: relative;
-  width: 70px;
-  height: 230px;
-  margin: 0 2px;
-  background: linear-gradient(180deg, #fff 0%, #eee 100%);
   border: 1px solid #000;
-  border-radius: 8px;
-  box-shadow: inset -5px 5px 20px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  z-index: 1;
-  text-transform: uppercase;
-}
-
-/* Teclas negras */
-.piano-keys .key.black {
-  position: absolute;
-  width: 44px;
-  height: 140px;
-  background: linear-gradient(to bottom, #333, #000);
-  border-radius: 0 0 5px 5px;
-  margin: 0;
-  cursor: pointer;
-  z-index: 2;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.7);
-}
-
-/* Posicionamiento de teclas negras relativas a las blancas */
-.piano-keys .key.black[data-key="w"] { left: 52px; }
-.piano-keys .key.black[data-key="e"] { left: 124px; }
-.piano-keys .key.black[data-key="t"] { left: 252px; }
-.piano-keys .key.black[data-key="y"] { left: 324px; }
-.piano-keys .key.black[data-key="u"] { left: 396px; }
-.piano-keys .key.black[data-key="o"] { left: 556px; }
-.piano-keys .key.black[data-key="p"] { left: 628px; }
-
-/* Letras en las teclas */
-.piano-keys .key span {
-  position: absolute;
-  bottom: 15px;
-  width: 100%;
+  display: inline-block;
   text-align: center;
-  font-size: 1.1rem;
-  color: #a2a2a2;
   user-select: none;
+  cursor: pointer;
 }
 
-/* Letras para teclas negras en un color más claro */
-.piano-keys .key.black span {
-  bottom: 10px;
-  color: #888;
+.key span {
+  position: absolute;
+  top: 6px;
+  width: 100%;
+  font-size: 0.75rem;
+  font-weight: bold;
 }
 
-/* Efecto tecla activa */
-.piano-keys .key.active.white {
-  background: linear-gradient(to bottom, #ff5555, #ff0000);
-  box-shadow: 0 0 10px #ff3333;
-  border-color: #ff0000;
+.white {
+  width: 60px;
+  height: 240px;
+  background: #fff;
+  z-index: 1;
+  margin: 0 1px;
 }
 
-.piano-keys .key.active.black {
-  background: linear-gradient(to bottom, #aa0000, #660000);
-  box-shadow: 0 0 10px #ff2222;
-  border-color: #660000;
+.black {
+  width: 40px;
+  height: 160px;
+  background: #000;
+  color: #fff;
+  z-index: 2;
+  position: absolute;
+  margin: 0 -20px;
 }
 
-/* Ocultar teclas si se quiere */
-.piano-keys .key.hide {
-  display: none;
+.active {
+  background: #ccc !important;
 }
 
-/* Controles (octava y volumen) */
-.octave-controls,
-.volume-slider {
-  user-select: none;
+footer {
+  margin-top: 2rem;
 }
 
-/* Ajustes responsivos */
-@media (max-width: 900px) {
-  .piano-keys .key.white {
-    width: 50px;
+@media screen and (max-width: 768px) {
+  .white {
+    width: 40px;
     height: 180px;
   }
-  .piano-keys .key.black {
+  .black {
     width: 30px;
-    height: 100px;
+    height: 120px;
   }
-  /* Recalcular posiciones negras si quieres, o se puede ajustar para que no se desalineen */
-  .piano-keys .key.black[data-key="w"] { left: 38px; }
-  .piano-keys .key.black[data-key="e"] { left: 90px; }
-  .piano-keys .key.black[data-key="t"] { left: 190px; }
-  .piano-keys .key.black[data-key="y"] { left: 242px; }
-  .piano-keys .key.black[data-key="u"] { left: 294px; }
-  .piano-keys .key.black[data-key="o"] { left: 414px; }
-  .piano-keys .key.black[data-key="p"] { left: 466px; }
 }
