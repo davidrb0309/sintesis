@@ -1,134 +1,115 @@
-const pianoKeys = document.querySelectorAll(".key"),
-      volumeSlider = document.querySelector(".volume-slider input"),
-      keysCheckbox = document.querySelector(".keys-checkbox input"),
-      octaveDownBtn = document.getElementById("octave-down"),
-      octaveUpBtn = document.getElementById("octave-up"),
-      octaveDisplay = document.getElementById("octave-display");
+const pianoKeys = document.querySelectorAll(".piano-keys .key"),
+  volumeSlider = document.getElementById("volume"),
+  octaveDownBtn = document.getElementById("octave-down"),
+  octaveUpBtn = document.getElementById("octave-up"),
+  octaveDisplay = document.getElementById("octave-display");
 
 let audioContext = null,
-    octave = 4, // octava inicial
-    volume = 0.5, // volumen inicial
+  octave = 4,
+  volume = 0.5;
 
-// Frecuencias base para una octava 4 (C4=261.63Hz)
-baseNotes = {
-    a: 261.63,  // C
-    w: 277.18,  // C#
-    s: 293.66,  // D
-    e: 311.13,  // D#
-    d: 329.63,  // E
-    f: 349.23,  // F
-    t: 370.00,  // F#
-    g: 392.00,  // G
-    y: 415.30,  // G#
-    h: 440.00,  // A
-    u: 466.16,  // A#
-    j: 493.88,  // B
-    k: 523.25,  // C (octava 5)
-    o: 554.37,  // C# (octava 5)
-    l: 587.33,  // D (octava 5)
-    p: 622.25,  // D# (octava 5)
-    ñ: 659.26   // E (octava 5)
+// Notas base para la octava 4 y 5 (las frecuencias se multiplican según octava)
+const baseNotes = {
+  a: 261.63, // C4
+  w: 277.18, // C#4
+  s: 293.66, // D4
+  e: 311.13, // D#4
+  d: 329.63, // E4
+  f: 349.23, // F4
+  t: 370.00, // F#4
+  g: 392.00, // G4
+  y: 415.30, // G#4
+  h: 440.00, // A4
+  u: 466.16, // A#4
+  j: 493.88, // B4
+  k: 523.25, // C5
+  o: 554.37, // C#5
+  l: 587.33, // D5
+  p: 622.25, // D#5
+  ñ: 659.26  // E5
 };
 
-// Crear contexto de audio si no existe
-const createAudioContext = () => {
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    }
-};
-
-// Calcular frecuencia según octava actual
-const getFrequency = (key) => {
-    if(!baseNotes[key]) return null;
-    let freq = baseNotes[key];
-    
-    // Ajustar frecuencia si la tecla está en octava diferente a 4
-    // Aquí asumimos que las teclas a-j están en octava 4,
-    // y las demás k-ñ están en octava 5 por ejemplo.
-    // Mejor aún: calcular el factor de octava para todas.
-    
-    // Nota: para simplicidad, tomamos que octava 4 es referencia.
-    // La fórmula para cambiar octava es freq * 2^(octave - 4)
-    return freq * Math.pow(2, octave - 4);
+// Crear contexto de audio
+function createAudioContext() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
 }
 
-// Reproducir nota
-const playNote = (freq) => {
-    if (!freq) return;
-    createAudioContext();
+// Reproducir nota con la frecuencia ajustada según octava
+function playNote(freq) {
+  createAudioContext();
 
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
 
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+  oscillator.type = "sine";
+  oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
 
-    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+  gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
 
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.5);
-};
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime + 0.5);
+}
 
-// Reproducir nota y activar tecla visual
-const playKey = (key) => {
-    const freq = getFrequency(key);
-    if (!freq) return;
+// Ajustar frecuencia según octava
+function getFrequency(key) {
+  let baseFreq = baseNotes[key];
+  if (!baseFreq) return null;
 
-    playNote(freq);
+  // Ajustar según octava: cada octava es el doble/mitad en frecuencia
+  const baseOctave = 4;
+  const octaveDiff = octave - baseOctave;
+  return baseFreq * Math.pow(2, octaveDiff);
+}
 
-    const clickedKey = document.querySelector(`[data-key="${key}"]`);
-    if (!clickedKey) return;
+// Reproducir la nota de una tecla
+function playKey(key) {
+  const freq = getFrequency(key);
+  if (!freq) return;
 
-    clickedKey.classList.add("active");
-    setTimeout(() => {
-        clickedKey.classList.remove("active");
-    }, 150);
-};
+  playNote(freq);
 
-// Armar array de teclas válidas
-const allKeys = Array.from(pianoKeys).map(k => k.dataset.key);
+  const pianoKey = document.querySelector(`.key[data-key="${key}"]`);
+  if (pianoKey) {
+    pianoKey.classList.add("active");
+    setTimeout(() => pianoKey.classList.remove("active"), 150);
+  }
+}
 
-// Eventos click para teclas
-pianoKeys.forEach(key => {
-    key.addEventListener("click", () => playKey(key.dataset.key));
+// Manejar clic en tecla
+pianoKeys.forEach((key) => {
+  key.addEventListener("click", () => {
+    playKey(key.dataset.key);
+  });
 });
 
-// Control volumen
-const handleVolume = (e) => {
-    volume = e.target.value;
-};
+// Cambiar volumen
+volumeSlider.addEventListener("input", (e) => {
+  volume = parseFloat(e.target.value);
+});
 
-// Mostrar/ocultar etiquetas de teclas
-const showHideKeys = () => {
-    pianoKeys.forEach(key => key.classList.toggle("hide"));
-};
-
-// Cambiar octava y actualizar display
-const changeOctave = (direction) => {
-    if (direction === "up" && octave < 6) {
-        octave++;
-    } else if (direction === "down" && octave > 2) {
-        octave--;
-    }
-    octaveDisplay.textContent = `Octava: ${octave}`;
-};
-
-// Tecla presionada en teclado físico
-const pressedKey = (e) => {
-    const key = e.key.toLowerCase();
-    if (allKeys.includes(key)) {
-        playKey(key);
-    }
-};
-
-// Listeners
-volumeSlider.addEventListener("input", handleVolume);
-keysCheckbox.addEventListener("click", showHideKeys);
-document.addEventListener("keydown", pressedKey);
+// Cambiar octava
+function changeOctave(direction) {
+  if (direction === "up" && octave < 6) {
+    octave++;
+  } else if (direction === "down" && octave > 2) {
+    octave--;
+  }
+  octaveDisplay.textContent = `Octava: ${octave}`;
+}
 
 octaveDownBtn.addEventListener("click", () => changeOctave("down"));
 octaveUpBtn.addEventListener("click", () => changeOctave("up"));
+
+// Escuchar tecla del teclado físico
+document.addEventListener("keydown", (e) => {
+  const key = e.key.toLowerCase();
+  if (baseNotes[key]) {
+    playKey(key);
+  }
+});
 
