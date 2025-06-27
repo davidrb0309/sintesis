@@ -39,15 +39,31 @@ body {
 
 #oscilloscope {
   width: 100%;
+  max-width: 600px;
   height: 120px;
-  background-color: #000;
+  background-color: #111;
   margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  border: 2px solid #dc3545;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .keyboard {
-  display: flex;
   position: relative;
-  justify-content: center;
+  width: 100%;
+  max-width: 880px;
+  min-width: 440px;
+  height: 240px;
+  margin: 0 auto 2rem auto;
+  background: #222;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
 }
 
 .key {
@@ -57,49 +73,125 @@ body {
   text-align: center;
   user-select: none;
   cursor: pointer;
+  transition: background 0.1s, box-shadow 0.1s;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.key:focus {
+  outline: 2px solid #f00;
 }
 
 .key span {
   position: absolute;
-  top: 6px;
-  width: 100%;
-  font-size: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  color: #e0e0e0;         /* Letras gris clarito */
+  font-size: 1rem;
   font-weight: bold;
+  pointer-events: none;
+  z-index: 3;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Letras en la parte inferior de las teclas blancas */
+.white span {
+  bottom: 12px;
+  top: auto;
+}
+
+/* Letras en la parte superior de las teclas negras */
+.black span {
+  top: 12px;
+  bottom: auto;
 }
 
 .white {
-  width: 60px;
-  height: 240px;
+  flex: 1 1 0;
+  width: 100%;
+  height: 100%;
   background: #fff;
   z-index: 1;
-  margin: 0 1px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  position: relative;
 }
 
 .black {
-  width: 40px;
-  height: 160px;
-  background: #000;
+  width: 8%;
+  min-width: 18px;
+  max-width: 40px;
+  height: 65%;
+  background: #222;
   color: #fff;
   z-index: 2;
   position: absolute;
-  margin: 0 -20px;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  border: 1px solid #111;
+  margin: 0;
+  left: 0;
+  top: 0;
 }
 
-.active {
-  background: #ccc !important;
+.active.white {
+  background: #e0e0e0 !important;
+  box-shadow: 0 0 10px #aaa;
+}
+
+.active.black {
+  background: #444 !important;
+  box-shadow: 0 0 12px #ff0000;
 }
 
 footer {
   margin-top: 2rem;
 }
 
-@media screen and (max-width: 768px) {
+/* Responsive: tablet */
+@media screen and (max-width: 1200px) {
+  .keyboard {
+    max-width: 660px;
+    min-width: 330px;
+    height: 160px;
+  }
+  #oscilloscope {
+    max-width: 100%;
+    height: 90px;
+  }
   .white {
-    width: 40px;
-    height: 180px;
+    min-width: 20px;
+    max-width: 40px;
   }
   .black {
-    width: 30px;
-    height: 120px;
+    min-width: 12px;
+    max-width: 24px;
+    height: 60%;
+  }
+}
+
+/* Responsive: móvil */
+@media screen and (max-width: 700px) {
+  .synth-container {
+    padding: 0.5rem;
+  }
+  #oscilloscope {
+    height: 60px;
+  }
+  .keyboard {
+    max-width: 330px;
+    min-width: 160px;
+    height: 80px;
+  }
+  .white {
+    min-width: 10px;
+    max-width: 22px;
+  }
+  .black {
+    min-width: 7px;
+    max-width: 14px;
+    height: 55%;
   }
 }
